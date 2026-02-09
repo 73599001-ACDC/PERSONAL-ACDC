@@ -1,20 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Kelly ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <title>Carta de San Valentín</title>
+    
+    <style>
+        /* --- ESTILOS CSS (Pegados aquí directamente para que no fallen) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffebf2;
+            --bg-envelope-color: #ffe3ed;
+            --envelope-tab: #ffccd5;
+            --envelope-cover: #ffc1d1;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --txt-color: #800020;
+            --heart-color: #ff477e;
+        }
+
+        body {
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            font-family: "Marck Script", cursive;
+            text-align: center;
+            font-size: 3rem;
+            color: #d6336c;
+            margin-bottom: 2rem;
+            z-index: 10;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 50px; /* Espacio para que la carta suba */
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            background-color: var(--bg-envelope-color);
+            box-shadow: 0 0 40px var(--shadow-color);
+            border-radius: 0 0 15px 15px;
+            width: 350px;  /* Ancho fijo seguro */
+            height: 250px; /* Alto fijo seguro */
+            cursor: pointer; /* Manito para indicar click */
+        }
+
+        /* Tapa Superior (Triángulo que abre) */
+        .envelope-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10; /* Encima de la carta cerrada */
+            border-top: 140px solid var(--envelope-tab);
+            border-right: 175px solid transparent; /* Mitad de 350px */
+            border-left: 175px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out 0.7s;
+        }
+
+        /* Tapa Derecha */
+        .tap-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            z-index: 20; /* Encima de la carta */
+            border-bottom: 140px solid var(--envelope-cover);
+            border-left: 175px solid transparent;
+            border-right: 175px solid var(--envelope-cover);
+            border-bottom-right-radius: 15px;
+            pointer-events: none; /* Permite clicks a través de ella si es necesario */
+        }
+
+        /* Tapa Izquierda */
+        .tap-left {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            z-index: 20; /* Encima de la carta */
+            border-bottom: 140px solid var(--envelope-cover);
+            border-right: 175px solid transparent;
+            border-left: 175px solid var(--envelope-cover);
+            border-bottom-left-radius: 15px;
+            pointer-events: none;
+        }
+
+        /* LA CARTA */
+        .letter {
+            position: absolute;
+            bottom: 0;
+            /* Estado INICIAL (Escondida) */
+            width: 80%;       
+            left: 10%;        
+            height: 80%;      
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 0 5px var(--shadow-color);
+            padding: 20px 15px;
+            border-radius: 10px;
+            transition: all 0.6s ease-in-out;
+            z-index: 5; /* Debajo de las tapas (z-index 10 y 20) */
+            opacity: 0; /* Truco: invisible hasta que se abra para evitar bordes raros */
+        }
+        
+        /* Cuando el script detecta carga, la hacemos visible pero escondida dentro */
+        .letter.loaded {
+            opacity: 1;
+        }
+
+        .letter .text {
+            font-family: "Gill Sans", Calibri, sans-serif;
+            color: var(--txt-color);
+            text-align: left;
+            font-size: 13px;
+            border: 2px dashed var(--envelope-tab);
+            padding: 10px;
+            height: 100%;
+            overflow-y: auto; /* Scroll */
+        }
+
+        /* Scrollbar bonito */
+        .letter .text::-webkit-scrollbar { width: 5px; }
+        .letter .text::-webkit-scrollbar-track { background: #f1f1f1; }
+        .letter .text::-webkit-scrollbar-thumb { background: var(--envelope-cover); border-radius: 5px; }
+
+        /* EL CORAZÓN */
+        .heart {
+            position: absolute;
+            top: 55%; 
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: var(--heart-color);
+            transform: translate(-50%, -50%) rotate(45deg);
+            box-shadow: 0 1px 6px var(--shadow-color);
+            z-index: 30; /* Lo más alto de todo para asegurar el click */
+            transition: transform 0.5s;
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: var(--heart-color);
+            border-radius: 50%;
+        }
+        .heart:before { top: -15px; left: 0; }
+        .heart:after { left: 15px; top: 0; }
+
+        /* --- CLASES DE ANIMACIÓN --- */
+        
+        /* 1. Abrir sobre */
+        .envelope-wrapper.flap::before {
+            transform: rotateX(180deg);
+            z-index: 1; /* Se va al fondo */
+        }
+
+        .envelope-wrapper.flap .heart {
+            transform: rotate(90deg);
+            opacity: 0; /* Desaparece */
+            transition: 0.2s;
+        }
+
+        /* 2. Sacar carta */
+        .letter.letter-opening {
+            transform: translateY(-180px); /* Sube */
+            height: 320px;   /* Crece de alto */
+            width: 90%;      /* Crece de ancho */
+            left: 5%;        /* Se centra */
+            z-index: 40;     /* Se pone ENCIMA de todo */
+        }
+        
+        /* Móvil Responsive */
+        @media screen and (max-width: 450px) {
+            .envelope-wrapper { width: 300px; height: 200px; }
+            .envelope-wrapper::before { 
+                border-top-width: 110px; 
+                border-right-width: 150px; 
+                border-left-width: 150px; 
+            }
+            .tap-right { 
+                border-bottom-width: 110px; 
+                border-left-width: 150px; 
+                border-right-width: 150px; 
+            }
+            .tap-left { 
+                border-bottom-width: 110px; 
+                border-right-width: 150px; 
+                border-left-width: 150px; 
+            }
+            .letter.letter-opening { height: 350px; transform: translateY(-130px); }
+        }
+    </style>
 </head>
 <body>
+
     <h1>¡Feliz San Valentín! ❤️</h1>
+    
     <div class="container">
-        <div class="envelope-wrapper">
+        <div class="envelope-wrapper" id="envelope">
             <div class="envelope">
-                <div class="letter">
+                <div class="letter loaded" id="letter">
                     <div class="text">
                         <strong>Querida Kelly:</strong>
                         <p>
@@ -24,21 +234,15 @@
                             Siempre he admirado tu forma de ser, lo que has cambiado en mí y tu forma tierna de ver las cosas. Eres realmente un <em>algodoncito de azúcar</em> porque todo lo amargo lo terminas convirtiendo en dulzura. <strong>¡Bombón!</strong>
                         </p>
                         <p>
-                            Por todo lo que hemos vivido y viviremos, quiero que celebremos este día especial. Pasemos una tarde inolvidable juntos donde nuestros corazones hablen en ternura y amor mutuo.
+                            Por todo lo que hemos vivido y viviremos, quiero que celebremos este día especial. Pasemos una tarde inolvidable juntos.
                         </p>
-                        <p>Te invito al plan que he pensado para nosotros con mucho amor:</p>
-                        
                         <div style="background-color: rgba(255,0,0,0.05); padding: 5px; border-radius: 5px; margin-top: 5px; font-size: 0.9em;">
                             <strong>📅 FECHA:</strong> Sábado 14 de febrero <br>
                             <strong>⏰ HORA:</strong> 2:00 pm <br>
                             <strong>📍 LUGAR:</strong> Restaurant campestre en Ingenio
                         </div>
-
                         <br>
-                        <div style="text-align: right;">
-                            Con mucho cariño,<br>
-                            <strong>Andy</strong>
-                        </div>
+                        <div style="text-align: right;">Con mucho cariño,<br><strong>Andy</strong></div>
                     </div>
                 </div>
             </div>
@@ -47,7 +251,30 @@
             <div class="tap-left"></div>
         </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        // --- JAVASCRIPT (Pegado aquí para asegurar funcionamiento) ---
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+
+        envelope.addEventListener('click', () => {
+            // Alternar clase para abrir/cerrar sobre
+            envelope.classList.toggle('flap');
+
+            // Lógica para la carta
+            if (!letter.classList.contains('letter-opening')) {
+                // Si está cerrada, esperamos a que el sobre abra y la sacamos
+                setTimeout(() => {
+                    letter.classList.add('letter-opening');
+                }, 500); // Espera 0.5s
+            } else {
+                // Si está abierta, la bajamos primero
+                letter.classList.remove('letter-opening');
+                // Nota: El sobre se cerrará solo porque quitamos la clase 'flap' arriba
+                // pero si quisiéramos ser precisos con el tiempo, habría que ajustar el toggle.
+                // Para simplificar y que no falle, el toggle funciona bien aquí.
+            }
+        });
+    </script>
 </body>
 </html>
