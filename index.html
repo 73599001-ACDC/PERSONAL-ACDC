@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTILOS CSS PREMIUM (Todo en uno) --- */
+        /* --- ESTILOS CSS --- */
         * {
             margin: 0;
             padding: 0;
@@ -17,19 +17,18 @@
         }
 
         :root {
-            /* Paleta de colores refinada para más elegancia */
-            --bg-color: #fff0f5; /* Fondo un poco más claro */
+            --bg-color: #fff0f5; 
             --bg-envelope-color: #ffe3ed;
-            --envelope-tab: #ffc2d1; /* Tapa un poco más oscura para contraste */
-            --envelope-cover: #ffd1dc; /* Solapas laterales */
-            --shadow-color: rgba(0, 0, 0, 0.15); /* Sombra más suave */
+            --envelope-tab: #ffc2d1; 
+            --envelope-cover: #ffd1dc; 
+            --shadow-color: rgba(0, 0, 0, 0.15); 
             --txt-color: #800020;
             --heart-color: #ff477e;
-            --heart-shine: #ff8fab; /* Nuevo color para el brillo del corazón */
+            --heart-shine: #ff8fab; 
         }
 
         body {
-            background: radial-gradient(circle, var(--bg-color) 0%, #ffe6ef 100%); /* Fondo con viñeta suave */
+            background: radial-gradient(circle, var(--bg-color) 0%, #ffe6ef 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -46,7 +45,7 @@
             color: #d6336c;
             margin-bottom: 2.5rem;
             z-index: 10;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Sombra sutil al texto */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); 
         }
 
         .container {
@@ -57,10 +56,10 @@
             margin-top: 30px;
         }
 
+        /* EL SOBRE (Aquí está la magia) */
         .envelope-wrapper {
             position: relative;
             background-color: var(--bg-envelope-color);
-            /* Sombra doble para más realismo: una difusa y una más cercana */
             box-shadow: 0 10px 30px -5px var(--shadow-color), 0 0 5px rgba(0,0,0,0.05);
             border-radius: 0 0 15px 15px;
             width: 350px;
@@ -68,7 +67,6 @@
             cursor: pointer;
         }
 
-        /* Efecto de profundidad interior en la boca del sobre */
         .envelope-wrapper::after {
             content: '';
             position: absolute;
@@ -77,11 +75,10 @@
             width: 100%;
             height: 30px;
             background: linear-gradient(to bottom, rgba(0,0,0,0.1), transparent);
-            z-index: 4; /* Encima de la carta cerrada */
+            z-index: 4; 
             pointer-events: none;
         }
 
-        /* Tapa Superior */
         .envelope-wrapper::before {
             content: "";
             position: absolute;
@@ -92,11 +89,10 @@
             border-right: 175px solid transparent;
             border-left: 175px solid transparent;
             transform-origin: top;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s; /* Animación más suave */
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1)); /* Sombra sutil en el borde de la tapa */
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s; 
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1)); 
         }
 
-        /* Tapas Laterales */
         .tap-right, .tap-left {
             position: absolute;
             bottom: 0;
@@ -104,7 +100,7 @@
             height: 0;
             z-index: 20;
             pointer-events: none;
-            filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.05)); /* Definición en los bordes */
+            filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.05)); 
         }
 
         .tap-right {
@@ -132,43 +128,42 @@
             height: 80%;      
             background: #fff;
             text-align: center;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.05); /* Sombra superior sutil */
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
             padding: 20px 15px;
             border-radius: 10px;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
-            opacity: 0;
+            opacity: 0; /* Oculta al inicio */
         }
         
-        .letter.loaded { opacity: 1; }
+        .letter.loaded { opacity: 1; } /* Se muestra al cargar */
 
         .letter .text {
             font-family: "Gill Sans", Calibri, sans-serif;
             color: var(--txt-color);
             text-align: left;
-            font-size: 14px; /* Letra un pelín más grande */
+            font-size: 14px; 
             border: 2px dashed var(--envelope-tab);
             padding: 15px;
             height: 100%;
             overflow-y: auto;
             line-height: 1.5;
         }
-
+        
+        /* SCROLLBAR */
         .letter .text::-webkit-scrollbar { width: 6px; }
         .letter .text::-webkit-scrollbar-track { background: #fff; }
         .letter .text::-webkit-scrollbar-thumb { background: var(--envelope-cover); border-radius: 10px; }
 
-        /* EL CORAZÓN "SELLO DE CERA" 3D */
+        /* CORAZÓN */
         .heart {
             position: absolute;
             top: 55%; 
             left: 50%;
-            width: 34px; /* Un poco más grande */
+            width: 34px; 
             height: 34px;
-            /* Degradado para efecto 3D brillante */
             background: radial-gradient(circle at 30% 30%, var(--heart-shine), var(--heart-color));
             transform: translate(-50%, -50%) rotate(45deg);
-            /* Sombra más nítida y cercana para parecer pegado */
             box-shadow: 2px 2px 4px rgba(0,0,0,0.2); 
             z-index: 30;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -179,59 +174,46 @@
             position: absolute;
             width: 34px;
             height: 34px;
-            /* El mismo degradado en los pseudoelementos */
             background: radial-gradient(circle at 30% 30%, var(--heart-shine), var(--heart-color));
             border-radius: 50%;
         }
         .heart:before { top: -17px; left: 0; }
         .heart:after { left: 17px; top: 0; }
 
-        /* --- ANIMACIONES --- */
-        
-        /* 1. Abrir sobre */
+        /* ANIMACIONES */
         .envelope-wrapper.flap::before {
             transform: rotateX(180deg);
             z-index: 1;
-            transition-delay: 0s; /* Abre inmediatamente al volver */
+            transition-delay: 0s; 
         }
 
-        /* Cuando se abre, quitamos la sombra interna para que la carta salga limpia */
         .envelope-wrapper.flap::after {
             opacity: 0;
             transition: opacity 0.3s;
         }
 
         .envelope-wrapper.flap .heart {
-            transform: rotate(90deg) scale(0.8); /* Gira y se hace un pelín más pequeño */
+            transform: rotate(90deg) scale(0.8); 
             opacity: 0;
             transition: 0.3s ease-in;
         }
 
-        /* 2. Sacar carta */
         .letter.letter-opening {
             transform: translateY(-200px);
             height: 380px;   
             width: 95%;      
             left: 2.5%;      
             z-index: 40;     
-            /* Sombra grande cuando la carta está flotando fuera */
             box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
-            transition-delay: 0.5s; /* Espera a que la tapa abra */
+            transition-delay: 0.5s; 
         }
         
-        /* Móvil Responsive */
         @media screen and (max-width: 450px) {
             h1 { font-size: 2.8rem; }
             .envelope-wrapper { width: 300px; height: 200px; }
-            .envelope-wrapper::before { 
-                border-top-width: 110px; border-right-width: 150px; border-left-width: 150px; 
-            }
-            .tap-right { 
-                border-bottom-width: 110px; border-left-width: 150px; border-right-width: 150px; 
-            }
-            .tap-left { 
-                border-bottom-width: 110px; border-right-width: 150px; border-left-width: 150px; 
-            }
+            .envelope-wrapper::before { border-top-width: 110px; border-right-width: 150px; border-left-width: 150px; }
+            .tap-right { border-bottom-width: 110px; border-left-width: 150px; border-right-width: 150px; }
+            .tap-left { border-bottom-width: 110px; border-right-width: 150px; border-left-width: 150px; }
             .letter.letter-opening { height: 400px; transform: translateY(-140px); }
         }
     </style>
@@ -241,5 +223,56 @@
     <h1>¡Feliz San Valentín! ❤️</h1>
     
     <div class="container">
-        <div class
+        <div class="envelope-wrapper" id="envelope">
+            <div class="envelope">
+                <div class="letter loaded" id="letter">
+                    <div class="text">
+                        <strong>Querida Kelly:</strong>
+                        <p>
+                            Estamos a pocos días de celebrar nuestro <strong>segundo San Valentín</strong>. Me llena de emoción que hayamos llegado hasta esta parte de nuestra relación. Lo confieso: no ha sido fácil, ha habido muchos obstáculos, pero todo se ha superado en su momento. Sin imaginarlo voló el tiempo y míranos... <em>estamos otra vez aquí.</em>
+                        </p>
+                        <p>
+                            Siempre he admirado tu forma de ser, lo que has cambiado en mí y tu forma tierna de ver las cosas. Eres realmente un <em>algodoncito de azúcar</em> porque todo lo amargo lo terminas convirtiendo en dulzura. <strong>¡Bombón!</strong>
+                        </p>
+                        <p>
+                            Por todo lo que hemos vivido y viviremos, quiero que celebremos este día especial. Pasemos una tarde inolvidable juntos.
+                        </p>
+                        <div style="background-color: rgba(255,0,0,0.05); padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 0.95em; border: 1px solid #ffccd5;">
+                            <strong>📅 FECHA:</strong> Sábado 14 de febrero <br>
+                            <strong>⏰ HORA:</strong> 2:00 pm <br>
+                            <strong>📍 LUGAR:</strong> Restaurant campestre en Ingenio
+                        </div>
+                        <br>
+                        <div style="text-align: right; margin-top: 10px;">
+                            Con mucho cariño,<br>
+                            <span style="font-family: 'Marck Script', cursive; font-size: 1.5em;">Andy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+            <div class="tap-right"></div>
+            <div class="tap-left"></div>
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+
+        envelope.addEventListener('click', () => {
+            if (!letter.classList.contains('letter-opening')) {
+                envelope.classList.add('flap');
+                setTimeout(() => {
+                    letter.classList.add('letter-opening');
+                }, 600);
+            } else {
+                letter.classList.remove('letter-opening');
+                setTimeout(() => {
+                    envelope.classList.remove('flap');
+                }, 600);
+            }
+        });
+    </script>
+</body>
 </html>
