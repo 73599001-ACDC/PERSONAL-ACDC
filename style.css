@@ -1,3 +1,4 @@
+/* --- RESET BÁSICO --- */
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +12,7 @@
     --envelope-tab: #ffccd5;
     --envelope-cover: #ffc1d1;
     --shadow-color: rgba(0, 0, 0, 0.2);
-    --txt-color: #800020; /* Corregido a un rojo vino elegante */
+    --txt-color: #800020; /* Rojo vino elegante */
     --heart-color: #ff477e;
 }
 
@@ -22,41 +23,44 @@ body {
     justify-content: center;
     flex-direction: column;
     height: 100vh;
-    overflow: hidden; /* Evita scroll en el body principal */
+    overflow: hidden; 
 }
 
 h1 {
-    font-family: "Marck Script", serif;
+    font-family: "Marck Script", cursive;
     text-align: center;
-    font-size: 50px; /* Un poco más pequeño para móviles */
+    font-size: 50px;
     margin-bottom: 30px;
-    color: #d6336c; /* Color más romántico para el título */
+    color: #d6336c;
+    z-index: 1;
 }
 
+/* --- CONTENEDOR PRINCIPAL --- */
 .container {
     width: 400px;
-    height: 300px; /* Definimos altura al contenedor */
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .envelope-wrapper {
     position: relative;
     background-color: var(--bg-envelope-color);
     box-shadow: 0 0 40px var(--shadow-color);
-    border-radius: 0 0 15px 15px; /* Solo redondeamos abajo */
+    border-radius: 0 0 15px 15px;
     width: 400px;
     height: 300px;
 }
 
-/* La solapa superior (la que se abre) */
+/* --- SOLAPA SUPERIOR (La que se abre) --- */
 .envelope-wrapper::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 5; /* Encima de la carta inicialmente */
+    z-index: 5; /* Encima de la carta cerrada */
     border-top: 180px solid var(--envelope-tab);
     border-right: 200px solid transparent;
     border-left: 200px solid transparent;
@@ -64,48 +68,49 @@ h1 {
     transition: all 0.5s ease-in-out 0.7s;
 }
 
-/* Solapa Derecha (hecha con bordes para encajar perfecto) */
+/* --- SOLAPA DERECHA --- */
 .tap-right {
     position: absolute;
     bottom: 0;
     right: 0;
     width: 0;
     height: 0;
-    z-index: 10; /* Siempre encima para formar el bolsillo */
+    z-index: 10;
     border-bottom: 150px solid var(--envelope-cover);
     border-left: 200px solid transparent;
     border-right: 200px solid var(--envelope-cover);
     border-bottom-right-radius: 15px;
 }
 
-/* Solapa Izquierda */
+/* --- SOLAPA IZQUIERDA --- */
 .tap-left {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 0;
-    z-index: 10; /* Siempre encima para formar el bolsillo */
+    z-index: 10;
     border-bottom: 150px solid var(--envelope-cover);
     border-right: 200px solid transparent;
     border-left: 200px solid var(--envelope-cover);
     border-bottom-left-radius: 15px;
 }
 
-/* La Carta */
+/* --- LA CARTA (Aquí está la corrección mágica) --- */
 .letter {
     position: absolute;
     bottom: 0;
-    width: 90%; /* Un poco más estrecha que el sobre */
-    left: 5%;
-    height: 90%; /* Altura inicial */
+    /* ESTADO CERRADO: Pequeña para esconderse */
+    width: 76%;       /* Más estrecha para que no asome por los lados */
+    left: 12%;        /* Centrada */
+    height: 75%;      /* Más baja para que la tape el pico */
     background: var(--primary);
     text-align: center;
     box-shadow: 0 0 5px var(--shadow-color);
     padding: 20px 10px;
     border-radius: 10px;
-    transition: transform 0.6s ease-in-out;
-    z-index: 3; /* Detrás de las solapas de abajo */
+    transition: all 0.6s ease-in-out; /* Transición suave para todo */
+    z-index: 3;       /* Debajo de las solapas */
 }
 
 .letter .text {
@@ -113,33 +118,22 @@ h1 {
     color: var(--txt-color);
     text-align: left;
     font-size: 13px;
-    border: 2px dashed var(--envelope-tab); /* Borde decorativo */
+    border: 2px dashed var(--envelope-tab);
     padding: 10px;
     height: 100%;
     line-height: 1.4;
-    overflow-y: auto; /* Permite scroll vertical */
+    overflow-y: auto; /* Scroll si el texto es muy largo */
 }
 
-/* Estilos personalizados para el scrollbar */
-.letter .text::-webkit-scrollbar {
-    width: 6px; 
-}
-.letter .text::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-    border-radius: 4px;
-}
-.letter .text::-webkit-scrollbar-thumb {
-    background: var(--envelope-cover); 
-    border-radius: 4px;
-}
-.letter .text::-webkit-scrollbar-thumb:hover {
-    background: var(--heart-color); 
-}
+/* Scrollbar bonito */
+.letter .text::-webkit-scrollbar { width: 6px; }
+.letter .text::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+.letter .text::-webkit-scrollbar-thumb { background: var(--envelope-cover); border-radius: 4px; }
 
-/* El Corazón */
+/* --- EL CORAZÓN --- */
 .heart {
     position: absolute;
-    top: 55%; /* Ajustado para cerrar justo en el pico */
+    top: 55%; 
     left: 50%;
     width: 30px;
     height: 30px;
@@ -148,11 +142,10 @@ h1 {
     transition: transform 0.5s ease-in-out 1s;
     box-shadow: 0 1px 6px var(--shadow-color);
     cursor: pointer;
-    z-index: 20; /* Lo más alto */
+    z-index: 20;
 }
 
-.heart:before,
-.heart:after {
+.heart:before, .heart:after {
     content: "";
     position: absolute;
     width: 30px;
@@ -163,40 +156,43 @@ h1 {
 .heart:before { top: -15px; left: 0; }
 .heart:after { left: 15px; top: 0; }
 
-/* --- ANIMACIONES --- */
+/* --- ANIMACIONES (CLASES QUE AGREGA JS) --- */
 
-/* 1. Abrir la solapa superior */
-.flap .envelope-wrapper::before {
+/* 1. Abrir la tapa */
+.envelope-wrapper.flap::before {
     transform: rotateX(180deg);
-    z-index: 1; /* Pasa al fondo para que salga la carta */
+    z-index: 1; /* La tapa se va al fondo */
 }
 
-/* 2. Mover el corazón */
-.flap .heart {
+.envelope-wrapper.flap .heart {
     transform: rotate(90deg);
-    opacity: 0; /* Desaparece el sello al abrir */
+    opacity: 0; /* El corazón desaparece */
     transition-delay: 0.2s;
 }
 
-/* 3. Sacar la carta */
+/* 2. Sacar y agrandar la carta */
 .letter.letter-opening {
-    transform: translateY(-200px); /* Sube la carta */
-    z-index: 15; /* IMPORTANTE: Se pone encima de todo al final */
-    height: 320px; /* Se hace más grande para leer mejor */
-    transition-delay: 0.5s; /* Espera a que se abra el sobre */
+    /* ESTADO ABIERTO: Grande para leer */
+    transform: translateY(-220px); /* Sube hacia arriba */
+    height: 360px;   /* Se hace más alta */
+    width: 95%;      /* Se hace más ancha (casi el ancho del sobre) */
+    left: 2.5%;      /* Se centra de nuevo */
+    z-index: 50;     /* Se pone ENCIMA de todo */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* --- RESPONSIVE (Móvil) --- */
+/* --- VERSION MÓVIL --- */
 @media screen and (max-width: 450px) {
-    .container {
-        width: 300px;
-    }
+    h1 { font-size: 40px; }
+
+    .container { width: 100%; }
     
     .envelope-wrapper {
         width: 300px;
         height: 220px;
     }
     
+    /* Ajuste geométrico del sobre en móvil */
     .envelope-wrapper::before {
         border-top: 130px solid var(--envelope-tab);
         border-right: 150px solid transparent;
@@ -215,18 +211,20 @@ h1 {
         border-left: 150px solid var(--envelope-cover);
     }
 
+    /* Ajuste de carta en móvil */
+    .letter {
+        width: 76%;  /* Estrecha cuando cerrada */
+        height: 70%;
+        left: 12%;
+    }
+
     .letter.letter-opening {
         transform: translateY(-120px);
-        height: 350px; /* Carta más larga en móvil */
-        width: 95%;
-        left: 2.5%;
-    }
-    
-    h1 {
-        font-size: 40px;
+        height: 350px; /* Muy alta en móvil para leer bien */
+        width: 90%;
+        left: 5%;
     }
 }
-
 
 
 
